@@ -24,16 +24,31 @@ SOFTWARE.
 
 import {JBind } from "./jbind.js";
 
+/**
+ * Generic property class
+ */
 export class Property {
     key = null;
+    /**
+     * Set the value
+     * @param {string|any} value The value
+     */
     set(value) {
         JBind.setValue(this, value);
     }
 
+    /**
+     * Get the value
+     * @returns The value
+     */
     get() {
         return JBind.getValue(this);
     }
 
+    /**
+     * Get the focus
+     * @returns True if focused
+     */
     isFocused() {
         return JBind.isFocused(this);
     }

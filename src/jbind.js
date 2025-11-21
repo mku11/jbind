@@ -28,8 +28,20 @@ import { DoubleProperty } from "./double_property.js";
 import { BooleanProperty } from "./boolean_property.js";
 import { ObjectProperty } from "./object_property.js";
 
+/**
+ * Binder class
+ */
 export class JBind {
     static #bindings = {};
+    
+    /**
+     * Binds a bindable object (property, observable_list) to a DOM element
+     * @param {any} root The root DOM element (usually document)
+     * @param {string} name A unique name for the binding
+     * @param {string} elementField The field of the DOM element (value,innerText,visibility,etc)
+     * @param {any} obj The observable object (property, observable_list, etc)
+     * @returns The element object
+     */
     static bind(root, name, elementField, obj) {
         let el = JBind.getElement(root, name);
         if (el == undefined)
@@ -114,7 +126,22 @@ export class JBind {
         return obj;
     }
 
+    static #checkCaller() {
+        let stackTrace = (new Error()).stack.split("\n");
+        for(let call of stackTrace) {
+            if(call.includes("jbind/") && !call.includes("jbind.js"))
+                return;
+        }
+        throw new Error("Do not call this method directly use property methods instead");
+    }
+
+    /**
+     * Set the value of an observable
+     * @param {any} obj The observable property object
+     * @param {any} value The value
+     */
     static setValue(obj, value) {
+        this.#checkCaller();
         let binding = this.#bindings[obj.key];
         let el = JBind.getElement(binding.root, binding.name);
         if (el.tagName == 'INPUT' && el.type == 'checkbox' && binding.field == 'value') {
@@ -151,6 +178,13 @@ export class JBind {
         }
     }
 
+    /**
+     * Set the value of an item that is part of an observable list
+     * @param {any} obj The observable list object
+     * @param {number} index The index in the list
+     * @param {string|any} value The value of the item
+     * @param {function(any,number,any)} oncontextmenu Onrightclick listener
+     */
     static setItemValue(obj, index, value, oncontextmenu) {
         let binding = JBind.getBinding(obj);
         let el = JBind.getElement(binding.root, binding.name);
@@ -250,6 +284,11 @@ export class JBind {
         }
     }
 
+    /**
+     * Remove an item that is part of an observable list
+     * @param {any} obj The observable list object
+     * @param {number} index The index in the list
+     */
     static removeItem(obj, index) {
         let binding = JBind.getBinding(obj);
         let el = JBind.getElement(binding.root, binding.name);
@@ -260,6 +299,13 @@ export class JBind {
         }
     }
 
+    /**
+     * Set the field of an item that is part of an observable list object
+     * @param {any} obj The object
+     * @param {number} index The index in the list
+     * @param {string} field The field name
+     * @param {string|any} value The value
+     */
     static setItemFieldValue(obj, index, field, value) {
         let binding = JBind.getBinding(obj);
         let el = JBind.getElement(binding.root, binding.name);
@@ -289,6 +335,11 @@ export class JBind {
         }
     }
 
+    /**
+     * Get the current binding
+     * @param {any} obj The observable object (property,observable_list) 
+     * @returns The binding
+     */
     static getBinding(obj) {
         if (!(obj.key in this.#bindings))
             throw new Error("Could not find element");
@@ -299,6 +350,12 @@ export class JBind {
         return binding;
     }
 
+    /**
+     * Get the binded DOM element by the bind name
+     * @param {any} root The DOM root
+     * @param {string} name The element bind name
+     * @returns The element
+     */
     static getElement(root, name) {
         if (root.getElementById != undefined)
             return root.getElementById(name);
@@ -306,12 +363,21 @@ export class JBind {
             return root.getElementsByClassName(name)[0];
     }
 
+    /**
+     * Set the focus of an observable object
+     * @param {any} obj The observable object (observable_list, property)
+     */
     static setFocus(obj) {
         let binding = this.#bindings[obj.key];
         let el = JBind.getElement(binding.root, binding.name);
         el.focus();
     }
 
+    /**
+     * Get the value of an observable property object
+     * @param {any} obj The observable property
+     * @returns The value
+     */
     static getValue(obj) {
         let binding = this.#bindings[obj.key];
         let el = JBind.getElement(binding.root, binding.name);
@@ -336,6 +402,11 @@ export class JBind {
         }
     }
 
+    /**
+     * Get the selection start of a text object
+     * @param {any} obj The observable property
+     * @returns The current selection start
+     */
     static getSelectionStart(obj) {
         let binding = this.#bindings[obj.key];
         let el = JBind.getElement(binding.root, binding.name);
@@ -348,6 +419,12 @@ export class JBind {
         }
     }
 
+    /**
+     * Set the selection start of a text object
+     * @param {any} obj The observable property
+     * @param {number} value The value
+     * @returns 
+     */
     static setSelectionStart(obj, value) {
         let binding = this.#bindings[obj.key];
         let el = JBind.getElement(binding.root, binding.name);
@@ -361,6 +438,11 @@ export class JBind {
     }
 
 
+    /**
+     * Get the current selectionEnd of a binded DOM element
+     * @param {any} obj The observable property
+     * @returns The current selectionEnd
+     */
     static getSelectionEnd(obj) {
         let binding = this.#bindings[obj.key];
         let el = JBind.getElement(binding.root, binding.name);
@@ -373,7 +455,12 @@ export class JBind {
         }
     }
 
-
+    /**
+     * Set the selection end of an observable object
+     * @param {any} obj The observable property
+     * @param {string|any} value The value
+     * @returns The new value
+     */
     static setSelectionEnd(obj, value) {
         let binding = this.#bindings[obj.key];
         let el = JBind.getElement(binding.root, binding.name);
@@ -386,6 +473,12 @@ export class JBind {
         }
     }
 
+    /**
+     * Set the value of an item in a list
+     * @param {any} obj The observable list
+     * @param {number} index The index of the list
+     * @param {string|any} value The value
+     */
     static setItemSelect(obj, index, value) {
         let binding = JBind.getBinding(obj);
         let el = JBind.getElement(binding.root, binding.name);
@@ -402,12 +495,23 @@ export class JBind {
         }
     }
 
+
+    /**
+     * Get the focus of an observable object
+     * @param {any} obj The observable object (property, observable_list, etc)
+     * @returns True if focused
+     */
     static isFocused(obj) {
         let binding = JBind.getBinding(obj);
         let el = JBind.getElement(binding.root, binding.name);
         return document.activeElement == el;
     }
 
+    /**
+     * Bring the item of an observable list into view
+     * @param {any} obj The observable list object
+     * @param {number} index The index of the list
+     */
     static bringIntoView(obj, index) {
         let binding = JBind.getBinding(obj);
         let el = JBind.getElement(binding.root, binding.name);

@@ -24,6 +24,9 @@ SOFTWARE.
 
 import {Property} from "./property.js";
 
+/**
+ * Object property
+ */
 export class ObjectProperty extends Property {
         
 }

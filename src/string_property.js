@@ -26,26 +26,48 @@ import {Property} from "./property.js";
 import {JBind } from "./jbind.js";
 
 export class StringProperty extends Property {
+    /**
+     * Set the focus to this
+     */
     focus() {
         JBind.setFocus(this);
     }
     
+    /**
+     * Get the selection start index
+     * @returns {number} The selection start
+     */
     getSelectionStart() {
         return JBind.getSelectionStart(this);
     }
 
+    /**
+     * Set the selection start
+     * @param {number} value 
+     */
     setSelectionStart(value) {
         JBind.setSelectionStart(this, value);
     }
 
+    /**
+     * Get the selection end
+     * @returns The selection end
+     */
     getSelectionEnd() {
         return JBind.getSelectionStart(this);
     }
 
+    /**
+     * Set the selection end
+     * @param {number} value 
+     */
     setSelectionEnd(value) {
         JBind.setSelectionEnd(this, value);
     }
 
+    /**
+     * Select all text
+     */
     setSelectionAll() {
         this.setSelectionStart(this, 0);
         this.setSelectionEnd(this.get().length);

@@ -24,6 +24,9 @@ SOFTWARE.
 
 import {Property} from "./property.js";
 
+/**
+ * Boolean property
+ */
 export class BooleanProperty extends Property {
         
 }

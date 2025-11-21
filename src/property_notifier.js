@@ -22,7 +22,10 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-export class IPropertyNotifier {
+/**
+ * Class notifies when property changes
+ */
+export class PropertyNotifier {
     getObservers() { }
 
     observePropertyChanges(onPropertyChanged, self = null) {
