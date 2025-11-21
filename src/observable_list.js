@@ -142,10 +142,10 @@ export class ObservableList {
 
     /**
      * Add an item
-     * @param {string|any} value The value of the item
+     * @param {string|any} value The value of the item as string or {name: name, value: value}
      * @param {function(any,number,any)} oncontextmenu An optional callback for a right click (list, position, value)
      */
-    push(value, oncontextmenu) {
+    add(value, oncontextmenu) {
         this.#list.push(value);
         if(value instanceof PropertyNotifier)
             value.observePropertyChanges(this.#itemPropertyChanged, this);
@@ -153,12 +153,12 @@ export class ObservableList {
     }
 
     /**
-     * Add an item at specific position
+     * Insert an item at specific position
      * @param {number} position The position in the list
-     * @param {string|any} value The value of the item
+     * @param {string|any} value The value of the item as string or {name: name, value: value}
      * @param {function(any,number,any)} oncontextmenu An optional callback for a right click (list, position, value)
      */
-    add(position, value, oncontextmenu) {
+    insert(position, value, oncontextmenu) {
         if (this.#list.length < position)
             this.#list = this.#list.concat(new Array(position - this.list.length));
         this.#list.splice(position, 0, value);
@@ -196,7 +196,7 @@ export class ObservableList {
      */
     addAll(values) {
         for (let val of values)
-            this.push(val);
+            this.add(val);
     }
 
     /**
