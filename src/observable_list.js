@@ -22,7 +22,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-import {Binding } from "./binding.js";
+import {JBind } from "./jbind.js";
 import { IPropertyNotifier } from "./iproperty_notifier.js";
 
 export class ObservableList {
@@ -56,7 +56,7 @@ export class ObservableList {
         this.lastSelection = -1;
         if(update) {
             for(let i=0; i<this.#list.length; i++)
-                Binding.setItemSelect(this, i, false);
+                JBind.setItemSelect(this, i, false);
         }
     }
 
@@ -83,7 +83,7 @@ export class ObservableList {
         let index = this.#list.indexOf(item);
         if(index >= 0) {
             this.selected.add(item);
-            Binding.setItemSelect(this, index, true);
+            JBind.setItemSelect(this, index, true);
             this.lastSelection = index;
         }
     }
@@ -109,14 +109,14 @@ export class ObservableList {
     async itemPropertyChanged(owner, propertyName, self) {
         let value = owner[propertyName];
         let index = self.#list.indexOf(owner);
-        Binding.setItemFieldValue(self, index, propertyName, value);
+        JBind.setItemFieldValue(self, index, propertyName, value);
     }
 
     push(value, oncontextmenu) {
         this.#list.push(value);
         if(value instanceof IPropertyNotifier)
             value.observePropertyChanges(this.itemPropertyChanged, this);
-        Binding.setItemValue(this, this.#list.length-1, value, oncontextmenu);
+        JBind.setItemValue(this, this.#list.length-1, value, oncontextmenu);
     }
 
     add(position, value, oncontextmenu) {
@@ -125,7 +125,7 @@ export class ObservableList {
         this.#list.splice(position, 0, value);
         if(value instanceof IPropertyNotifier)
             value.observePropertyChanges(this.itemPropertyChanged, this);
-        Binding.setItemValue(this, position, value, oncontextmenu);
+        JBind.setItemValue(this, position, value, oncontextmenu);
     }
 
     get(position) {
@@ -140,7 +140,7 @@ export class ObservableList {
         this.selected.clear();
         this.#list.length = 0;
         this.lastSelection = -1;
-        Binding.setValue(this, null);
+        JBind.setValue(this, null);
     }
 
     addAll(values) {
@@ -162,7 +162,7 @@ export class ObservableList {
             let item = this.#list[index]
             this.#list.splice(index, 1);
             this.selected.delete(item);
-            Binding.removeItem(this, index)
+            JBind.removeItem(this, index)
         }
     }
 
@@ -175,6 +175,6 @@ export class ObservableList {
     }
 
     bringIntoView(index) {
-        Binding.bringIntoView(this, index);
+        JBind.bringIntoView(this, index);
     }
 }

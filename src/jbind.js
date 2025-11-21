@@ -28,83 +28,83 @@ import { DoubleProperty } from "./double_property.js";
 import { BooleanProperty } from "./boolean_property.js";
 import { ObjectProperty } from "./object_property.js";
 
-export class Binding {
+export class JBind {
     static #bindings = {};
     static bind(root, name, elementField, obj) {
-        let el = Binding.getElement(root, name);
+        let el = JBind.getElement(root, name);
         if (el == undefined)
             throw new Error("Could not find document element: " + name);
         let objBinding = { name: name, field: elementField, obj: obj, root: root };
         let key = name + ":" + elementField;
         if (el.tagName.toLowerCase() === 'table') {
             if (elementField === 'tbody' && obj instanceof ObservableList) {
-                Binding.#bindings[key] = objBinding;
+                JBind.#bindings[key] = objBinding;
                 obj.key = key;
             } else
                 throw new Error("Can only bind ObservableList to table body");
         } else if (el.tagName.toLowerCase() === 'span') {
             if (elementField === 'innerText' && obj instanceof StringProperty) {
-                Binding.#bindings[key] = objBinding;
+                JBind.#bindings[key] = objBinding;
                 obj.key = key;
             } else
                 throw new Error("Can only bind string to span value");
         } else if (el.tagName.toLowerCase() === 'input' && el.type === 'text') {
             if (elementField === 'value' && obj instanceof StringProperty) {
-                Binding.#bindings[key] = objBinding;
+                JBind.#bindings[key] = objBinding;
                 obj.key = key;
             } else
                 throw new Error("Can only bind StringProperty to input text value");
         } else if (el.tagName.toLowerCase() === 'progress' && elementField == 'value') {
             if (obj instanceof DoubleProperty) {
-                Binding.#bindings[key] = objBinding;
+                JBind.#bindings[key] = objBinding;
                 obj.key = key;
             } else
                 throw new Error("Can only bind DoubleProperty to progress value");
         } else if (elementField === 'display') {
             if (obj instanceof BooleanProperty) {
-                Binding.#bindings[key] = objBinding;
+                JBind.#bindings[key] = objBinding;
                 obj.key = key;
             } else
                 throw new Error("Can only bind BooleanProperty to display value");
         } else if (elementField === 'visibility') {
             if (obj instanceof BooleanProperty) {
-                Binding.#bindings[key] = objBinding;
+                JBind.#bindings[key] = objBinding;
                 obj.key = key;
             } else
                 throw new Error("Can only bind BooleanProperty to visibility value");
         } else if (el.tagName.toLowerCase() === 'img' && elementField === 'src') {
             if (obj instanceof ObjectProperty) {
-                Binding.#bindings[key] = objBinding;
+                JBind.#bindings[key] = objBinding;
                 obj.key = key;
             } else
                 throw new Error("Can only bind ObjectProperty to img src");
         } else if (el.tagName.toLowerCase() === 'textarea' && elementField === 'textContent') {
             if (obj instanceof StringProperty) {
-                Binding.#bindings[key] = objBinding;
+                JBind.#bindings[key] = objBinding;
                 obj.key = key;
             } else
                 throw new Error("Can only bind ObjectProperty to img src");
         } else if (el.tagName.toLowerCase() === 'input' && el.type == 'checkbox' && elementField === 'value') {
             if (obj instanceof BooleanProperty) {
-                Binding.#bindings[key] = objBinding;
+                JBind.#bindings[key] = objBinding;
                 obj.key = key;
             } else
                 throw new Error("Can only bind BooleanProperty to input checkbox");
         } else if (el.tagName.toLowerCase() === 'select' && elementField === 'options') {
             if (obj instanceof ObservableList) {
-                Binding.#bindings[key] = objBinding;
+                JBind.#bindings[key] = objBinding;
                 obj.key = key;
             } else
                 throw new Error("Can only bind ObservableList to select options");
         } else if (el.tagName.toLowerCase() === 'video' && elementField === 'src') {
             if (obj instanceof StringProperty) {
-                Binding.#bindings[key] = objBinding;
+                JBind.#bindings[key] = objBinding;
                 obj.key = key;
             } else
                 throw new Error("Can only bind ObservableList to select options");
         } else if (el.tagName.toLowerCase() === 'iframe' && elementField === 'src') {
             if (obj instanceof ObjectProperty) {
-                Binding.#bindings[key] = objBinding;
+                JBind.#bindings[key] = objBinding;
                 obj.key = key;
             } else
                 throw new Error("Can only bind ObjectProperty to iframe src");
@@ -116,7 +116,7 @@ export class Binding {
 
     static setValue(obj, value) {
         let binding = this.#bindings[obj.key];
-        let el = Binding.getElement(binding.root, binding.name);
+        let el = JBind.getElement(binding.root, binding.name);
         if (el.tagName == 'INPUT' && el.type == 'checkbox' && binding.field == 'value') {
             el.checked = value;
         } else if (binding.field == 'value') {
@@ -152,8 +152,8 @@ export class Binding {
     }
 
     static setItemValue(obj, index, value, oncontextmenu) {
-        let binding = Binding.getBinding(obj);
-        let el = Binding.getElement(binding.root, binding.name);
+        let binding = JBind.getBinding(obj);
+        let el = JBind.getElement(binding.root, binding.name);
         if (el.tagName == 'SELECT' && binding.field == 'options') {
             var option = document.createElement('option');
             option.value = value;
@@ -251,8 +251,8 @@ export class Binding {
     }
 
     static removeItem(obj, index) {
-        let binding = Binding.getBinding(obj);
-        let el = Binding.getElement(binding.root, binding.name);
+        let binding = JBind.getBinding(obj);
+        let el = JBind.getElement(binding.root, binding.name);
         if (binding.field == 'tbody') {
             let th = el.getElementsByTagName('th');
             let tbody = el.getElementsByTagName('tbody')[0];
@@ -261,8 +261,8 @@ export class Binding {
     }
 
     static setItemFieldValue(obj, index, field, value) {
-        let binding = Binding.getBinding(obj);
-        let el = Binding.getElement(binding.root, binding.name);
+        let binding = JBind.getBinding(obj);
+        let el = JBind.getElement(binding.root, binding.name);
         if (binding.field == 'tbody') {
             let th = el.getElementsByTagName('th');
             let tbody = el.getElementsByTagName('tbody')[0];
@@ -293,7 +293,7 @@ export class Binding {
         if (!(obj.key in this.#bindings))
             throw new Error("Could not find element");
         let binding = this.#bindings[obj.key];
-        let el = Binding.getElement(binding.root, binding.name);
+        let el = JBind.getElement(binding.root, binding.name);
         if (el == undefined)
             throw new Error("Could not find document element: " + binding.name);
         return binding;
@@ -308,13 +308,13 @@ export class Binding {
 
     static setFocus(obj) {
         let binding = this.#bindings[obj.key];
-        let el = Binding.getElement(binding.root, binding.name);
+        let el = JBind.getElement(binding.root, binding.name);
         el.focus();
     }
 
     static getValue(obj) {
         let binding = this.#bindings[obj.key];
-        let el = Binding.getElement(binding.root, binding.name);
+        let el = JBind.getElement(binding.root, binding.name);
         if (el.tagName == 'INPUT' && el.type == 'checkbox' && binding.field == 'value') {
             return el.checked;
         } else if (binding.field == 'value') {
@@ -338,7 +338,7 @@ export class Binding {
 
     static getSelectionStart(obj) {
         let binding = this.#bindings[obj.key];
-        let el = Binding.getElement(binding.root, binding.name);
+        let el = JBind.getElement(binding.root, binding.name);
         if (el.tagName.toLowerCase() === 'textarea') {
             return el.selectionStart;
         } else if (el.tagName.toLowerCase() === 'input') {
@@ -350,7 +350,7 @@ export class Binding {
 
     static setSelectionStart(obj, value) {
         let binding = this.#bindings[obj.key];
-        let el = Binding.getElement(binding.root, binding.name);
+        let el = JBind.getElement(binding.root, binding.name);
         if (el.tagName.toLowerCase() === 'textarea') {
             return el.selectionStart = value;
         } else if (el.tagName.toLowerCase() === 'input') {
@@ -363,7 +363,7 @@ export class Binding {
 
     static getSelectionEnd(obj) {
         let binding = this.#bindings[obj.key];
-        let el = Binding.getElement(binding.root, binding.name);
+        let el = JBind.getElement(binding.root, binding.name);
         if (el.tagName.toLowerCase() === 'textarea') {
             return el.selectionEnd;
         } else if (el.tagName.toLowerCase() === 'input') {
@@ -376,7 +376,7 @@ export class Binding {
 
     static setSelectionEnd(obj, value) {
         let binding = this.#bindings[obj.key];
-        let el = Binding.getElement(binding.root, binding.name);
+        let el = JBind.getElement(binding.root, binding.name);
         if (el.tagName.toLowerCase() === 'textarea') {
             return el.selectionEnd = value;
         } else if (el.tagName.toLowerCase() === 'input') {
@@ -387,8 +387,8 @@ export class Binding {
     }
 
     static setItemSelect(obj, index, value) {
-        let binding = Binding.getBinding(obj);
-        let el = Binding.getElement(binding.root, binding.name);
+        let binding = JBind.getBinding(obj);
+        let el = JBind.getElement(binding.root, binding.name);
         if (binding.field == 'tbody') {
             let tbody = el.getElementsByTagName('tbody')[0];
             let row = tbody.childNodes[index];
@@ -403,14 +403,14 @@ export class Binding {
     }
 
     static isFocused(obj) {
-        let binding = Binding.getBinding(obj);
-        let el = Binding.getElement(binding.root, binding.name);
+        let binding = JBind.getBinding(obj);
+        let el = JBind.getElement(binding.root, binding.name);
         return document.activeElement == el;
     }
 
     static bringIntoView(obj, index) {
-        let binding = Binding.getBinding(obj);
-        let el = Binding.getElement(binding.root, binding.name);
+        let binding = JBind.getBinding(obj);
+        let el = JBind.getElement(binding.root, binding.name);
         var rows = el.rows;
         rows[index].scrollIntoView({behavior: 'smooth', block: 'center'});
     }

@@ -22,19 +22,19 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-import {Binding } from "./binding.js";
+import {JBind } from "./jbind.js";
 
 export class Property {
     key = null;
     set(value) {
-        Binding.setValue(this, value);
+        JBind.setValue(this, value);
     }
 
     get() {
-        return Binding.getValue(this);
+        return JBind.getValue(this);
     }
 
     isFocused() {
-        return Binding.isFocused(this);
+        return JBind.isFocused(this);
     }
 }

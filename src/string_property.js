@@ -23,27 +23,27 @@ SOFTWARE.
 */
 
 import {Property} from "./property.js";
-import {Binding } from "./binding.js";
+import {JBind } from "./jbind.js";
 
 export class StringProperty extends Property {
     focus() {
-        Binding.setFocus(this);
+        JBind.setFocus(this);
     }
     
     getSelectionStart() {
-        return Binding.getSelectionStart(this);
+        return JBind.getSelectionStart(this);
     }
 
     setSelectionStart(value) {
-        Binding.setSelectionStart(this, value);
+        JBind.setSelectionStart(this, value);
     }
 
     getSelectionEnd() {
-        return Binding.getSelectionStart(this);
+        return JBind.getSelectionStart(this);
     }
 
     setSelectionEnd(value) {
-        Binding.setSelectionEnd(this, value);
+        JBind.setSelectionEnd(this, value);
     }
 
     setSelectionAll() {
