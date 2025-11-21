@@ -1,12 +1,12 @@
 # jbind
 A small JavaScript UI binding framework. Supports select and table elements and hides the details of the DOM tree. It also support most other simple UI elements like input, checkbox, textarea, img.  
 Published under MIT License  
-  
+   
 [![License: MIT](https://img.shields.io/github/license/mku11/jbind.svg)](LICENSE)
 [![Version](https://img.shields.io/badge/version-1.0.0-blue)](https://github.com/mku11/jbind/releases)
 [![GitHub Releases](https://img.shields.io/github/downloads/mku11/jbind/latest/total?logo=github)](https://github.com/mku11/jbind/releases)
-
-# Supported DOM Elements:
+  
+# Supported DOM Elements:  
 Although these tags are supported not all fields are supported.  
 * select
 * table
@@ -19,8 +19,9 @@ Although these tags are supported not all fields are supported.
 * iframe (minimal support)
 
 ## Examples
-1. Bind an observable list to a table
-HTML:
+1. Bind an observable list to a table  
+  
+HTML:  
 ```
 <table id="table" class="table">
 	<thead class="table-header">
@@ -28,7 +29,7 @@ HTML:
 </table>
 ```
 
-JS:
+JS:  
 ```
     let list = JBind.bind(document, 'table', 'tbody', new ObservableList());
 	
@@ -63,9 +64,9 @@ JS:
 	// clear all items
 	list.clear();
 ```
-
+  
 2. Bind an observable list to a select options property  
-HTML:
+HTML:  
 ```
 <select id="car-type">
 </select>
