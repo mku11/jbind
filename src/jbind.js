@@ -27,6 +27,7 @@ import { StringProperty } from "./string_property.js";
 import { DoubleProperty } from "./double_property.js";
 import { BooleanProperty } from "./boolean_property.js";
 import { ObjectProperty } from "./object_property.js";
+import { Property } from "./property.js";
 
 /**
  * Binder class
@@ -39,8 +40,8 @@ export class JBind {
      * @param {any} root The root DOM element (usually document)
      * @param {string} id The DOM element id or name
      * @param {string} field The field of the DOM element (value,innerText,visibility,etc)
-     * @param {any} obj The observable object (property, observable_list, etc)
-     * @returns The element object
+     * @param {Property|ObservableList} obj The observable object
+     * @returns {Property|ObservableList} The element object
      */
     static bind(root, id, field, obj) {
         let el = JBind.getElement(root, id);
