@@ -526,6 +526,6 @@ export class JBind {
         let binding = JBind.getBinding(obj);
         let el = JBind.getElement(binding.root, binding.id);
         var rows = el.rows;
-        rows[index].scrollIntoView({behavior: 'smooth', block: 'center'});
+        rows[index].scrollIntoView({behavior: 'smooth', block: 'center', container: 'nearest'});
     }
 }
